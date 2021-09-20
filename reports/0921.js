@@ -1,6 +1,6 @@
 class ArrayUtilities {
   /* Your magic here */
-  static addZeros = arr => arr.map( i => i * 10);
+  static addZeros = arr => arr.map( i => i * 10 );
   static moreThanFifty = arr => arr.filter( i => i > 50 );
   static removeFirst = ([i,...rest]) => rest;
   static sumAll = arr => arr.reduce( (p,c) => p + c );
