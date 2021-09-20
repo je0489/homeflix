@@ -1,19 +1,10 @@
 class ObjectUtilities {
     /* Your magic here */
-    static mergeObjects = (A, B) => {
-      return { ...A, ...B };
-    };
-    static removePassword = (user) => {
-      const { name, favFood } = user;
-      return { name, favFood };
-    };
-    static freezeObj = (user) => Object.freeze(user);
-    static getOnlyValues = (user) => {
-      return Object.values(user);
-    };
-    static getOnlyProperties = (user) => {
-      return Object.keys(user);
-    };
+    static mergeObjects = (A, B) => ({ ...A, ...B });
+    static removePassword = ({password, ...rest}) => rest;
+    static freezeObj = user => Object.freeze(user);
+    static getOnlyValues = user => Object.values(user);
+    static getOnlyProperties = user => Object.keys(user);
   }
   
   const objA = {
