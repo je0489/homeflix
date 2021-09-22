@@ -1,2 +1,10 @@
-# http://je0489.github.io/movie-app<br>
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Netflix clone
+
+Using React and ES6 by building a Movie Discovery App
+
+## screens
+
+- [] Home
+- [] TV Shows
+- [] Search
+- [] Detail
