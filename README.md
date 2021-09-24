@@ -13,16 +13,16 @@ Using React and ES6 by building a Movie Discovery App
 
 > 1.  TV
 
-- [ ] Top Rated
-- [ ] Popular
-- [ ] Airing Today
-- [ ] TV Show Detail include videos
-- [ ] Search
+- [x] Top Rated
+- [x] Popular
+- [x] Airing Today
+- [x] TV Show Detail include videos
+- [x] Search
 
 > 2. Movie
 
-- [ ] Now playing
-- [ ] Upcoming
-- [ ] Popular
-- [ ] Movie Detail include videos
-- [ ] Search
+- [x] Now playing
+- [x] Upcoming
+- [x] Popular
+- [x] Movie Detail include videos
+- [x] Search
