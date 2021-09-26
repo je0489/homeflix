@@ -1,1 +1,3 @@
-export default () => "HOME";
+import HomeContainer from "./HomeContainer";
+
+export default HomeContainer;
