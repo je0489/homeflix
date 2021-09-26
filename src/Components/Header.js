@@ -4,27 +4,33 @@ import styled from "styled-components";
 
 const Header = styled.header`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50px;
   display: flex;
   align-items: center;
+  top: 0;
+  left: 20px;
+  width: 100%;
+  height: 60px;
+  font-size: 1.1rem;
   background-color: rgba(20, 20, 20, 0.8);
   z-index: 10;
   box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.8);
 `;
+
 const List = styled.ul`
   display: flex;
 `;
+
 const Item = styled.li`
-  width: 80px;
-  height: 50px;
+  /* width: 80px; */
+  height: 60px;
   text-align: center;
+  text-transform: uppercase;
   border-bottom: 5px solid
     ${(props) => (props.isCurrent ? "#E50914" : "transparent")};
   transition: border-bottom 0.5s ease-in-out;
+  padding: 0 20px;
 `;
+
 const SLink = styled(Link)`
   height: 100%;
   display: flex;
