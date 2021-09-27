@@ -1,16 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { symbol } from "prop-types";
 import styled from "styled-components";
 
 import Loader from "../../Components/Loader";
 
-const Container = styled.div`
-  display: grid;
-  width: 100%;
-`;
+const Container = styled.div``;
 
-const Div = styled.div`
-  padding-bottom: 8px;
+const Div = styled.div``;
+
+const Ranking = styled.span`
+  font-weight: 700;
 `;
 
 const CoinsPresenter = ({ coins, loading, error }) =>
@@ -18,21 +17,32 @@ const CoinsPresenter = ({ coins, loading, error }) =>
     <Loader />
   ) : (
     <Container>
-      {coins.map((coin) => {
-        const { rank, name, symbol } = coin;
-        return (
-          <Div>
-            #{rank} {name}/{symbol}
-          </Div>
-        );
-      })}
+      {coins
+        .filter((coin) => coin.rank !== 0)
+        .sort((f, s) => f.rank - s.rank)
+        .map((coin) => {
+          const { id, rank, name, symbol } = coin;
+          return (
+            <Div key={id}>
+              <Ranking>#{rank} </Ranking>
+              {name}/{symbol}
+            </Div>
+          );
+        })}
     </Container>
   );
 
 CoinsPresenter.propTypes = {
-  coins: PropTypes.array,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string
+  coins: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      rank: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      symbol: PropTypes.string.isRequired,
+    }).isRequired
+  ).is,
+  error: PropTypes.string,
 };
 
 export default CoinsPresenter;

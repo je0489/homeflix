@@ -7,14 +7,14 @@ export default class extends React.Component {
   state = {
     coins: null,
     loading: true,
-    error: null
+    error: null,
   };
 
   async componentDidMount() {
     try {
       const { data } = await api.coins();
       this.setState({
-        coins: data
+        coins: data,
       });
     } catch {
       this.setState({ error: "Dont find coin datas" });
@@ -24,7 +24,6 @@ export default class extends React.Component {
   }
 
   render() {
-    const { coins, loading, error } = this.state;
-    return <CoinsPresenter coins={coins} loading={loading} error={error} />;
+    return <CoinsPresenter {...this.state} />;
   }
 }

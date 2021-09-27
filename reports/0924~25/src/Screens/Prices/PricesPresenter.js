@@ -4,41 +4,50 @@ import styled from "styled-components";
 
 import Loader from "../../Components/Loader";
 
-const Container = styled.div`
-  display: grid;
-  width: 100%;
-`;
+const Container = styled.div``;
 
-const Div = styled.div`
+const Section = styled.div`
   padding-bottom: 8px;
 `;
 
-const PricesPresenter = ({ homepage, loading, error }) =>
+const PricesPresenter = ({ prices, loading, error }) =>
   loading ? (
     <Loader />
   ) : (
     <Container>
-      {homepage.map((h) => {
+      {prices.map((p) => {
         const {
+          id,
           name,
           symbol,
           quotes: {
-            USD: { price }
-          }
-        } = h;
+            USD: { price },
+          },
+        } = p;
         return (
-          <Div>
+          <Section key={id}>
             {name} / {symbol} : ${price}
-          </Div>
+          </Section>
         );
       })}
     </Container>
   );
 
 PricesPresenter.propTypes = {
-  homepage: PropTypes.array,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string
+  prices: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      symbol: PropTypes.string.isRequired,
+      quotes: PropTypes.shape({
+        USD: PropTypes.shape({
+          price: PropTypes.number.isRequired,
+        }).isRequired,
+      }).isRequired,
+    }).isRequired
+  ).isRequired,
+  error: PropTypes.string,
 };
 
 export default PricesPresenter;

@@ -5,16 +5,16 @@ import api from "../../api";
 // 홈페이지 : 코인 명, 기호, 가격을 보여줍니다.
 export default class extends React.Component {
   state = {
-    homepage: null,
+    prices: null,
     loading: true,
-    error: null
+    error: null,
   };
 
   async componentDidMount() {
     try {
-      const { data } = await api.homepage();
+      const { data } = await api.prices();
       this.setState({
-        homepage: data
+        prices: data,
       });
     } catch {
       this.setState({ error: "Dont find price datas" });
@@ -24,9 +24,6 @@ export default class extends React.Component {
   }
 
   render() {
-    const { homepage, loading, error } = this.state;
-    return (
-      <PricesPresenter homepage={homepage} loading={loading} error={error} />
-    );
+    return <PricesPresenter {...this.state} />;
   }
 }

@@ -7,14 +7,14 @@ export default class extends React.Component {
   state = {
     exchanges: null,
     loading: true,
-    error: null
+    error: null,
   };
 
   async componentDidMount() {
     try {
       const { data } = await api.exchanges();
       this.setState({
-        exchanges: data
+        exchanges: data,
       });
     } catch {
       this.setState({ error: "Dont find exchange datas" });
@@ -24,13 +24,6 @@ export default class extends React.Component {
   }
 
   render() {
-    const { exchanges, loading, error } = this.state;
-    return (
-      <ExchangesPresenter
-        exchanges={exchanges}
-        loading={loading}
-        error={error}
-      />
-    );
+    return <ExchangesPresenter {...this.state} />;
   }
 }
