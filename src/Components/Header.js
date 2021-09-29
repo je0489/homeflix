@@ -7,9 +7,11 @@ const Header = styled.header`
   display: flex;
   align-items: center;
   top: 0;
-  left: 20px;
+  left: 0;
   width: 100%;
   height: 60px;
+  padding-top: 4px;
+  padding-left: 20px;
   font-size: 1.1rem;
   background-color: rgba(20, 20, 20, 0.8);
   z-index: 10;

@@ -16,7 +16,7 @@ const Title = styled.span`
 const Grid = styled.div`
   display: grid;
   margin-top: 25px;
-  grid-template-columns: repeat(auto-fill, 125px);
+  grid-template-columns: repeat(auto-fill, 220px);
   grid-gap: 25px;
 `;
 
