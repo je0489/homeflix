@@ -1,1 +1,3 @@
-export default () => "SEARCH";
+import SearchContainer from "./SearchContainer";
+
+export default SearchContainer;
