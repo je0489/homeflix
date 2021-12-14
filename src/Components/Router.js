@@ -6,13 +6,14 @@ import {
   Switch,
 } from "react-router-dom";
 import Header from "./Header";
-import Home from "Routes/Home/index";
-import Movie from "Routes/Movie/index";
-import TV from "Routes/TV/index";
-import Search from "Routes/Search/index";
-import Tranding from "Routes/Tranding/index";
-import Detail from "Routes/Detail";
+import Home from "../Routes/Home/index";
+import Movie from "../Routes/Movie/index";
+import TV from "../Routes/TV/index";
+import Search from "../Routes/Search/index";
+import Tranding from "../Routes/Tranding/index";
+import Detail from "../Routes/Detail";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => (
   <Router>
     <Header />

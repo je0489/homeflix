@@ -4,8 +4,8 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 
-import { DefaultContainer } from "Components/GlobalStyles";
-import ErrorMsg from "Components/ErrorMsg";
+import { DefaultContainer } from "../../Components/GlobalStyles";
+import ErrorMsg from "../../Components/ErrorMsg";
 
 const Container = styled.div`
   ${DefaultContainer}

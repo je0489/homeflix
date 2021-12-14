@@ -1,8 +1,8 @@
 import React from "react";
 import SearchPresenter from "./SearchPresenter";
-import { moviesApi, tvApi } from "api";
+import { moviesApi, tvApi } from "../../api";
 
-// interactivity 상호작용
+// eslint-disable-next-line import/no-anonymous-default-export
 export default class extends React.Component {
   state = {
     movieResults: null,
@@ -50,7 +50,6 @@ export default class extends React.Component {
 
   render() {
     const { movieResults, tvResults, searchTerm, loading, error } = this.state;
-    console.log(this.state);
     return (
       <SearchPresenter
         movieResults={movieResults}

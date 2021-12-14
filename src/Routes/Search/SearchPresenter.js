@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import Loader from "Components/Loader";
-import Section from "Components/Section";
-import Poster from "Components/Poster";
-import ErrorMsg from "Components/ErrorMsg";
+import Loader from "../../Components/Loader";
+import Section from "../../Components/Section";
+import Poster from "../../Components/Poster";
+import ErrorMsg from "../../Components/ErrorMsg";
 
 const Container = styled.div`
   padding: 20px;
