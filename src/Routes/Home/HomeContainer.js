@@ -4,32 +4,21 @@ import { moviesApi } from "api";
 
 export default class extends React.Component {
   state = {
-    nowPlaying: null,
-    upcoming: null,
-    popular: null,
-    loading: true,
+    bgImgOfPopular: null,
     error: null,
   };
 
   async componentDidMount() {
     try {
       const {
-        data: { results: nowPlaying },
-      } = await moviesApi.nowPlaying();
-      const {
-        data: { results: upcoming },
-      } = await moviesApi.upcoming();
-      const {
         data: { results: popular },
       } = await moviesApi.popular();
       this.setState({
-        nowPlaying,
-        upcoming,
-        popular,
+        bgImgOfPopular: popular.slice(0, 4).map((movie) => movie.backdrop_path),
       });
     } catch {
       this.setState({
-        error: "Can't find movie infomation.",
+        error: "Can't find the infomation.",
       });
     } finally {
       this.setState({
@@ -39,16 +28,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const { nowPlaying, upcoming, popular, loading, error } = this.state;
-    console.log(this.state);
-    return (
-      <HomePresenter
-        nowPlaying={nowPlaying}
-        upcoming={upcoming}
-        popular={popular}
-        loading={loading}
-        error={error}
-      />
-    );
+    const { bgImgOfPopular, error } = this.state;
+    return <HomePresenter bgImgOfPopular={bgImgOfPopular} error={error} />;
   }
 }
