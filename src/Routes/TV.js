@@ -34,9 +34,20 @@ function TV() {
           data: { results: airingToday },
         } = await tvApi.airingToday();
 
-        setPopular(top10(noImage(popular)));
-        setTopRated(noImage(topRated));
-        setAiringToday(noImage(airingToday));
+        const createGenreKey = (datas) =>
+          datas.map((data) => {
+            const { genre_ids } = data;
+            return {
+              ...data,
+              genres: genre_ids.map(
+                (_id) => genres.find(({ id, _ }) => id === _id).name
+              ),
+            };
+          });
+
+        setPopular(createGenreKey(top10(noImage(popular))));
+        setTopRated(createGenreKey(noImage(topRated)));
+        setAiringToday(createGenreKey(noImage(airingToday)));
         setLoading(popular && topRated && airingToday ? false : true);
       } catch {
         setError("오류가 발생했습니다! TV 프로그램 정보를 찾을 수 없습니다.");

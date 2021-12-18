@@ -31,13 +31,36 @@ function Search() {
     (async () => {
       try {
         const {
-          data: { results: movieResults },
-        } = await moviesApi.search(location.state);
+          data: { genres: tvGenres },
+        } = await tvApi.getGenres();
         const {
           data: { results: tvResults },
         } = await tvApi.search(location.state);
-        setTvResults(noImage(movieResults));
-        setMovieResults(noImage(tvResults));
+        const {
+          data: { genres: movieGenres },
+        } = await moviesApi.getGenres();
+        const {
+          data: { results: movieResults },
+        } = await moviesApi.search(location.state);
+
+        const createGenreKey = (datas, isMovie) =>
+          datas.map((data) => {
+            const { genre_ids } = data;
+            return {
+              ...data,
+              genres: genre_ids
+                .map((_id) => {
+                  const genre = !isMovie
+                    ? tvGenres.find(({ id, _ }) => id === _id)
+                    : movieGenres.find(({ id, _ }) => id === _id);
+                  return genre ? genre.name : "";
+                })
+                .filter((name) => name !== ""),
+            };
+          });
+
+        setTvResults(createGenreKey(noImage(movieResults), false));
+        setMovieResults(createGenreKey(noImage(tvResults), true));
         setLoading(movieResults && tvResults ? false : true);
       } catch {
         setError(
@@ -62,18 +85,18 @@ function Search() {
             <Loader />
           ) : (
             <>
-              {movieResults && movieResults.length > 0 && (
-                <Section
-                  title="Movie Resultes"
-                  cards={movieResults}
-                  isMovie={true}
-                />
-              )}
               {tvResults && tvResults.length > 0 && (
                 <Section
+                  isMovie={false}
                   title="TV Resultes"
                   cards={tvResults}
-                  isMovie={false}
+                />
+              )}
+              {movieResults && movieResults.length > 0 && (
+                <Section
+                  isMovie={true}
+                  title="Movie Resultes"
+                  cards={movieResults}
                 />
               )}
               {error && <ErrorMsg type="error" text={error} />}

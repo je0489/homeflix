@@ -22,6 +22,9 @@ function Movie() {
     (async () => {
       try {
         const {
+          data: { genres },
+        } = await moviesApi.getGenres();
+        const {
           data: { results: popular },
         } = await moviesApi.popular();
         const {
@@ -30,9 +33,21 @@ function Movie() {
         const {
           data: { results: upcoming },
         } = await moviesApi.upcoming();
-        setPopular(top10(noImage(popular)));
-        setNowPlaying(noImage(nowPlaying));
-        setUpcoming(noImage(upcoming));
+
+        const createGenreKey = (datas) =>
+          datas.map((data) => {
+            const { genre_ids } = data;
+            return {
+              ...data,
+              genres: genre_ids.map(
+                (_id) => genres.find(({ id, _ }) => id === _id).name
+              ),
+            };
+          });
+
+        setPopular(createGenreKey(top10(noImage(popular))));
+        setNowPlaying(createGenreKey(noImage(nowPlaying)));
+        setUpcoming(createGenreKey(noImage(upcoming)));
         setLoading(popular && nowPlaying && upcoming ? false : true);
       } catch {
         setError("오류가 발생했습니다! 영화 정보를 찾을 수 없습니다.");
