@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useRouteMatch } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
+import InfoCard from "./InfoCard";
+
 const Container = styled(motion.div)`
-  width: calc(100vw - 0.3rem);
   height: 8.5rem;
   display: flex;
   position: relative;
@@ -27,6 +29,52 @@ const RowContainer = styled(motion.div)`
   gap: 0.625rem;
 `;
 
+const Button = styled.div`
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+  font-size: 3rem;
+  font-weight: 900;
+  transition: opacity step-end 1s;
+  z-index: 3;
+
+  ${(props) => props.position === "left"} {
+    right: -1rem;
+  }
+
+  ${({ position }) => position === "right"} {
+    left: -1rem;
+  }
+
+  &.hidden {
+    opacity: 0;
+    cursor: default;
+  }
+
+  &:hover:not(.hidden) {
+    opacity: 0.6;
+    font-size: 4rem;
+    margin: -0.3rem -0.24rem 0;
+  }
+`;
+
+const Card = styled(motion.div)`
+  position: relative;
+  background-image: url(${(props) => props.bgUrl});
+  height: 8.5rem;
+  background-size: cover;
+  border-radius: 4px;
+  background-position: center center;
+
+  &:first-child {
+    transform-origin: center left;
+  }
+
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+
 const rowVariants = {
   init: (moveToLeft) => ({
     x: moveToLeft ? -window.outerWidth - 10 : window.outerWidth + 10,
@@ -39,46 +87,29 @@ const rowVariants = {
   }),
 };
 
-const Button = styled.div`
-  position: absolute;
-  top: 50%;
-  cursor: pointer;
-  font-size: 3rem;
-  font-weight: 900;
-  transition: opacity step-end 1s;
-  z-index: 5;
+const cardVariants = {
+  normal: {
+    scale: 1,
+  },
 
-  ${(props) => props.position === "left"} {
-    right: 1rem;
-  }
+  hover: {
+    scale: 1.3,
+    y: -20,
+    zIndex: 5,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
+      type: "tween",
+    },
+  },
+};
 
-  ${({ position }) => position === "right"} {
-    left: -1rem;
-  }
-
-  &.hidden {
-    opacity: 0;
-  }
-
-  &:hover:not(.hidden) {
-    opacity: 0.6;
-    font-size: 4rem;
-    margin: -0.3rem -0.24rem 0;
-  }
-`;
-
-const Card = styled.div`
-  background-image: url(${(props) => props.bgUrl});
-  height: 8.5rem;
-  background-size: cover;
-  border-radius: 4px;
-  background-position: center center;
-`;
-
-const Section = ({ title, cards }) => {
+const Section = ({ title, cards, isMovie }) => {
   const offset = 5,
     maxIndex = Math.ceil(cards.length / offset) - 1,
     position = { left: "left", right: "right", both: "both" };
+  const movieMatch = useRouteMatch("/movie");
+  const searchMatch = useRouteMatch("/search");
   const [index, setIndex] = useState(0);
   const [exit, setExit] = useState(false);
   const [back, setBack] = useState(false);
@@ -138,7 +169,20 @@ const Section = ({ title, cards }) => {
             <Card
               key={card.id}
               bgUrl={`https://image.tmdb.org/t/p/w300${card.backdrop_path}`}
-            />
+              variants={cardVariants}
+              whileHover="hover"
+              initial="normal"
+              transition={{ type: "tween" }}
+            >
+              <InfoCard
+                title={
+                  (searchMatch ? !isMovie : movieMatch)
+                    ? card.original_title
+                    : card.original_name
+                }
+                genres={card.genres}
+              />
+            </Card>
           ))}
         </RowContainer>
       </AnimatePresence>
@@ -154,6 +198,7 @@ const Section = ({ title, cards }) => {
 Section.propTypes = {
   title: PropTypes.string.isRequired,
   cards: PropTypes.array,
+  isMovie: PropTypes.bool,
 };
 
 export default Section;
