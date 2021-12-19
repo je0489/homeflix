@@ -63,9 +63,9 @@ function Search() {
             };
           });
 
-        setTvResults(createGenreKey(noImage(movieResults), false));
-        setMovieResults(createGenreKey(noImage(tvResults), true));
-        setLoading(movieResults && tvResults ? false : true);
+        setTvResults(createGenreKey(noImage(tvResults), false));
+        setMovieResults(createGenreKey(noImage(movieResults), true));
+        setLoading(tvResults && movieResults ? false : true);
       } catch {
         setError(
           "오류가 발생했습니다! 입력한 검색어에 대한 결과를 찾을 수 없습니다."

@@ -194,7 +194,7 @@ const Section = ({ title, keyword, cards, isMovie }) => {
             >
               <InfoCard
                 title={
-                  (searchMatch ? !isMovie : movieMatch !== null)
+                  (searchMatch ? isMovie : movieMatch !== null)
                     ? card.original_title
                     : card.original_name
                 }
