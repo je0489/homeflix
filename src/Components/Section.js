@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
@@ -65,6 +65,7 @@ const Card = styled(motion.div)`
   background-size: cover;
   border-radius: 4px;
   background-position: center center;
+  cursor: pointer;
 
   &:first-child {
     transform-origin: center left;
@@ -104,10 +105,11 @@ const cardVariants = {
   },
 };
 
-const Section = ({ title, cards, isMovie }) => {
+const Section = ({ title, keyword, cards, isMovie }) => {
   const offset = 5,
     maxIndex = Math.ceil(cards.length / offset) - 1,
     position = { left: "left", right: "right", both: "both" };
+  const history = useHistory();
   const movieMatch = useRouteMatch("/movie");
   const searchMatch = useRouteMatch("/search");
   const [index, setIndex] = useState(0);
@@ -143,6 +145,14 @@ const Section = ({ title, cards, isMovie }) => {
   };
 
   const toggleExitState = () => setExit((prev) => !prev);
+
+  const onCardClicked = (isMovie, id, { searchTerm } = "") => {
+    history.push({
+      pathname: `/${searchMatch ? "search" : isMovie ? "movie" : "tv"}/${id}`,
+      state: { keyword, isMovie, searchTerm },
+    });
+  };
+
   return (
     <Container>
       <Title>{title}</Title>
@@ -168,15 +178,23 @@ const Section = ({ title, cards, isMovie }) => {
           {cards.slice(index * offset, index * offset + offset).map((card) => (
             <Card
               key={card.id}
+              layoutId={`${keyword}-${String(card.id)}`}
               bgUrl={`https://image.tmdb.org/t/p/w300${card.backdrop_path}`}
               variants={cardVariants}
               whileHover="hover"
               initial="normal"
               transition={{ type: "tween" }}
+              onClick={() =>
+                onCardClicked(
+                  searchMatch ? isMovie : movieMatch !== null,
+                  card.id,
+                  history.location.state
+                )
+              }
             >
               <InfoCard
                 title={
-                  (searchMatch ? !isMovie : movieMatch)
+                  (searchMatch ? !isMovie : movieMatch !== null)
                     ? card.original_title
                     : card.original_name
                 }
@@ -197,6 +215,7 @@ const Section = ({ title, cards, isMovie }) => {
 
 Section.propTypes = {
   title: PropTypes.string.isRequired,
+  keyword: PropTypes.string.isRequired,
   cards: PropTypes.array,
   isMovie: PropTypes.bool,
 };

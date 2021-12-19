@@ -7,6 +7,7 @@ import { noImage } from "../utils";
 
 import Loader from "../Components/Loader";
 import Section from "../Components/Section";
+import Detail from "../Components/Detail";
 import ErrorMsg from "../Components/ErrorMsg";
 
 const Container = styled.div`
@@ -23,6 +24,9 @@ const SearchTerm = styled.div`
 
 function Search() {
   const location = useLocation();
+  const {
+    state: { searchTerm },
+  } = location;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [tvResults, setTvResults] = useState([]);
@@ -35,13 +39,13 @@ function Search() {
         } = await tvApi.getGenres();
         const {
           data: { results: tvResults },
-        } = await tvApi.search(location.state);
+        } = await tvApi.search(searchTerm);
         const {
           data: { genres: movieGenres },
         } = await moviesApi.getGenres();
         const {
           data: { results: movieResults },
-        } = await moviesApi.search(location.state);
+        } = await moviesApi.search(searchTerm);
 
         const createGenreKey = (datas, isMovie) =>
           datas.map((data) => {
@@ -68,7 +72,7 @@ function Search() {
         );
       }
     })();
-  }, [location]);
+  }, [searchTerm]);
 
   return (
     <>
@@ -78,7 +82,7 @@ function Search() {
       ) : (
         <Container>
           <SearchTerm>
-            검색어 "<p className="term">{location.state}</p>"에 대한 검색
+            검색어 "<p className="term">{searchTerm}</p>"에 대한 검색
             결과입니다.
           </SearchTerm>
           {loading ? (
@@ -89,6 +93,7 @@ function Search() {
                 <Section
                   isMovie={false}
                   title="TV Resultes"
+                  keyword="tvResults"
                   cards={tvResults}
                 />
               )}
@@ -96,9 +101,11 @@ function Search() {
                 <Section
                   isMovie={true}
                   title="Movie Resultes"
+                  keyword="movieResults"
                   cards={movieResults}
                 />
               )}
+              <Detail />
               {error && <ErrorMsg type="error" text={error} />}
               {tvResults &&
                 movieResults &&
@@ -108,6 +115,7 @@ function Search() {
                 )}
             </>
           )}
+          <Detail />
         </Container>
       )}
     </>

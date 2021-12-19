@@ -53,7 +53,7 @@ const Search = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/search", searchTerm);
+    history.push({ pathname: "/search", state: { searchTerm } });
   };
 
   const updateTerm = ({ target: { value } }) => {

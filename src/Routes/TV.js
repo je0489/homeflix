@@ -6,6 +6,7 @@ import { noImage, top10 } from "../utils";
 
 import Loader from "../Components/Loader";
 import Section from "../Components/Section";
+import Detail from "../Components/Detail";
 import ErrorMsg from "../Components/ErrorMsg";
 
 const Container = styled.div`
@@ -64,14 +65,27 @@ function TV() {
       ) : (
         <Container>
           {popular && popular.length > 0 && (
-            <Section title="오늘 TOP 10 TV 프로그램" cards={popular} />
+            <Section
+              title="오늘 TOP 10 TV 프로그램"
+              keyword={"popular"}
+              cards={popular}
+            />
           )}
           {topRated && topRated.length > 0 && (
-            <Section title="꾸준히 인기 많은 TV 프로그램" cards={topRated} />
+            <Section
+              title="꾸준히 인기 많은 TV 프로그램"
+              keyword={"topRated"}
+              cards={topRated}
+            />
           )}
           {airingToday && airingToday.length > 0 && (
-            <Section title="현재 방영 중인 TV 프로그램" cards={airingToday} />
+            <Section
+              title="현재 방영 중인 TV 프로그램"
+              keyword={"airingToday"}
+              cards={airingToday}
+            />
           )}
+          <Detail />
           {error && <ErrorMsg type="error" text={error} />}
         </Container>
       )}

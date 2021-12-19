@@ -6,6 +6,7 @@ import { noImage, top10 } from "../utils";
 
 import Loader from "../Components/Loader";
 import Section from "../Components/Section";
+import Detail from "../Components/Detail";
 import ErrorMsg from "../Components/ErrorMsg";
 
 const Container = styled.div`
@@ -64,14 +65,27 @@ function Movie() {
       ) : (
         <Container>
           {popular && popular.length > 0 && (
-            <Section title="오늘 TOP 10 영화" cards={popular} />
+            <Section
+              title="오늘 TOP 10 영화"
+              keyword={"popular"}
+              cards={popular}
+            />
           )}
           {nowPlaying && nowPlaying.length > 0 && (
-            <Section title="지금 상영 중인 영화" cards={nowPlaying} />
+            <Section
+              title="지금 상영 중인 영화"
+              keyword={"nowPlaying"}
+              cards={nowPlaying}
+            />
           )}
           {upcoming && upcoming.length > 0 && (
-            <Section title="곧 개봉할 영화" cards={upcoming} />
+            <Section
+              title="곧 개봉할 영화"
+              keyword={"upcoming"}
+              cards={upcoming}
+            />
           )}
+          <Detail />
           {error && <ErrorMsg type="error" text={error} />}
         </Container>
       )}

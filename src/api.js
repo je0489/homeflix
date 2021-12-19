@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: "https://api.themoviedb.org/3/",
   params: {
     api_key: "9bbaa74d076c46799b7b1e527458fe42",
-    language: "en-US",
+    language: "ko-KR",
   },
 });
 
@@ -14,10 +14,11 @@ export const tvApi = {
   airingToday: () => api.get("tv/airing_today"),
   onTheAir: () => api.get("tv/on_the_air"),
   getGenres: () => api.get("genre/tv/list"),
-  showDetail: (id) =>
+  tvShowDetail: (id) =>
     api.get(`tv/${id}`, {
       params: {
-        append_to_response: "videos",
+        append_to_response: "images",
+        include_image_language: "null,en",
       },
     }),
   search: (term) =>
@@ -36,7 +37,8 @@ export const moviesApi = {
   movieDetail: (id) =>
     api.get(`movie/${id}`, {
       params: {
-        append_to_response: "videos",
+        append_to_response: "images",
+        include_image_language: "null,en",
       },
     }),
   search: (term) =>
