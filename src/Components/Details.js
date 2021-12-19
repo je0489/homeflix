@@ -45,6 +45,8 @@ const DeatilContainer = styled(motion.div)`
   background-color: #181818;
   letter-spacing: 0.1rem;
   z-index: 99;
+  overscroll-behavior: contain;
+  overflow: auto;
 `;
 
 const Backdrop = styled.div`
@@ -102,7 +104,6 @@ const CloseButton = styled.div`
 
 const Detail = styled.div`
   background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-  height: 10rem;
   padding: 2rem;
   font-weight: 100;
 `;
@@ -218,6 +219,7 @@ function Details() {
       <DeatilContainer
         layoutId={`${keyword}-${id}`}
         style={{ top: scrollY.get() + 25 }}
+        onWheel={() => {}}
       >
         {loading ? (
           <Loader />
