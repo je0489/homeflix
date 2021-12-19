@@ -165,17 +165,18 @@ function Details() {
     params: { id },
   } = detailMatch;
   let keyword = "",
-    isMovie = false;
+    isMovie = false,
+    searchTerm = "";
   const { scrollY } = useViewportScroll();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [details, setDetails] = useState([]);
   const [title, setTitle] = useState("");
 
-  if (history.state)
+  if (history.location.state)
     ({
       location: {
-        state: { keyword, isMovie },
+        state: { keyword, isMovie, searchTerm },
       },
     } = history);
   else isMovie = history.location.pathname.includes("movie");
@@ -200,7 +201,10 @@ function Details() {
   }, [isMovie, id]);
 
   const goBack = () => {
-    history.push(`/${detailMatch.path.replace(/\/|:id/g, "")}`);
+    history.push({
+      pathname: `/${detailMatch.path.replace(/\/|:id/g, "")}`,
+      state: { searchTerm },
+    });
   };
 
   if (isNaN(+id)) return null;
