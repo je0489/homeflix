@@ -148,14 +148,57 @@ const Genre = styled.div`
   }
 `;
 
-const Descripe = styled.div`
+const DetailItem = styled.div`
   margin-top: 1.2rem;
   font-weight: 400;
   line-height: 1.2;
 
   &::before {
-    content: "descripe";
-    ${badge}
+    content: "${({ before }) => before}";
+    ${badge};
+  }
+`;
+
+const VideoContainer = styled.div`
+  border: 1px solid #585858;
+  border-radius: 10px;
+  display: flex;
+  position: relative;
+  padding: 1rem;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const Thumbnail = styled.div`
+  min-width: 35%;
+  overflow: hidden;
+  margin-right: 0.8rem;
+
+  & > div {
+    background-image: url(${({ url }) => url});
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    height: 11rem;
+    margin: -1.5rem 0;
+  }
+`;
+
+const VideoInfo = styled.p`
+  &:last-child {
+    position: absolute;
+    bottom: 0.4rem;
+    right: 0.6rem;
+    font-weight: 200;
+    font-size: 0.7rem;
+    color: #a9a9a9;
+
+    &::before {
+      content: "published at: ";
+    }
   }
 `;
 
@@ -172,6 +215,7 @@ function Details() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [details, setDetails] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [title, setTitle] = useState("");
 
   if (history.location.state)
@@ -184,17 +228,28 @@ function Details() {
 
   useEffect(() => {
     (async () => {
-      let data = null;
+      let results = null,
+        videos = null;
       try {
-        if (!isMovie) ({ data } = await tvApi.tvShowDetail(+id));
-        else ({ data } = await moviesApi.movieDetail(+id));
+        if (!isMovie) {
+          ({ data: results } = await tvApi.tvShowDetail(+id));
+          ({
+            data: { results: videos },
+          } = await tvApi.getVideos(+id));
+        } else {
+          ({ data: results } = await moviesApi.movieDetail(+id));
+          ({
+            data: { results: videos },
+          } = await moviesApi.getVideos(+id));
+        }
         setDetails(
-          data.images.logos.length > 0
-            ? { ...data }
-            : { ...data, ...{ images: { logos: [""] } } }
+          results.images.logos.length > 0
+            ? { ...results }
+            : { ...results, ...{ images: { logos: [""] } } }
         );
-        setTitle(isMovie ? data.original_title : data.original_name);
-        setLoading(data ? false : true);
+        setTitle(isMovie ? results.original_title : results.original_name);
+        setVideos(videos.slice(0, 5));
+        setLoading(results && videos ? false : true);
       } catch {
         setError(`[${id}] 정보를 찾을 수 없습니다.`);
       }
@@ -254,9 +309,31 @@ function Details() {
                   <Genre key={idx}>{name}</Genre>
                 ))}
               </Genres>
-              <Descripe>
+              <DetailItem before={"descripe"}>
                 {details.overview.length > 0 ? details.overview : "-"}
-              </Descripe>
+              </DetailItem>
+              <DetailItem before={"Trailers & More"}>
+                {videos.length > 0
+                  ? videos.map(({ key, name, published_at }) => (
+                      <VideoContainer
+                        key={key}
+                        title={name}
+                        onClick={() =>
+                          window.open(`https://www.youtube.com/watch?v=${key}`)
+                        }
+                      >
+                        <Thumbnail
+                          url={`https://img.youtube.com/vi/${key}/0.jpg`}
+                        >
+                          <div />
+                        </Thumbnail>
+                        {[name, published_at.split(" ")[0]].map((val) => (
+                          <VideoInfo>{val}</VideoInfo>
+                        ))}
+                      </VideoContainer>
+                    ))
+                  : "-"}
+              </DetailItem>
             </Detail>
           </>
         )}

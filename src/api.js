@@ -21,6 +21,7 @@ export const tvApi = {
         include_image_language: "null,en",
       },
     }),
+  getVideos: (id) => api.get(`tv/${id}/videos`),
   search: (term) =>
     api.get("search/tv", {
       params: {
@@ -41,6 +42,7 @@ export const moviesApi = {
         include_image_language: "null,en",
       },
     }),
+  getVideos: (id) => api.get(`movie/${id}/videos`),
   search: (term) =>
     api.get("search/movie", {
       params: {
