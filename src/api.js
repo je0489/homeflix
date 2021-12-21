@@ -22,6 +22,7 @@ export const tvApi = {
       },
     }),
   getVideos: (id) => api.get(`tv/${id}/videos`),
+  getSimilarTvShows: (id) => api.get(`tv/${id}/similar`),
   search: (term) =>
     api.get("search/tv", {
       params: {
@@ -43,6 +44,7 @@ export const moviesApi = {
       },
     }),
   getVideos: (id) => api.get(`movie/${id}/videos`),
+  getSimilarMovies: (id) => api.get(`movie/${id}/similar`),
   search: (term) =>
     api.get("search/movie", {
       params: {

@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
 import { tvApi, moviesApi } from "../api";
+import { noImage } from "../utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -14,12 +15,12 @@ const badge = css`
   display: flex;
   width: fit-content;
   align-items: center;
-  height: 1.3rem;
+  height: 2em;
   margin-left: -0.2rem;
   padding: 0.1rem 0.5rem;
   border: 1px solid #595959;
   border-radius: 9px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   font-weight: 300;
   margin-bottom: 0.8rem;
 `;
@@ -45,6 +46,7 @@ const DeatilContainer = styled(motion.div)`
   background-color: #181818;
   letter-spacing: 0.1rem;
   z-index: 99;
+  scroll-behavior: smooth;
   overscroll-behavior: contain;
   overflow: auto;
 `;
@@ -52,10 +54,11 @@ const DeatilContainer = styled(motion.div)`
 const Backdrop = styled.div`
   position: relative;
   display: flex;
-  height: 60vh;
+  height: ${({ similar }) => (!similar ? "60vh" : "8.5rem")};
   flex-direction: column;
   justify-content: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+  background-image: ${({ similar }) =>
+      !similar ? "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1))," : null}
     url(${(props) => props.bgUrl});
   border-radius: 4px;
   background-size: cover;
@@ -124,9 +127,18 @@ const Date = styled.div`
 
 const Title = styled.div`
   margin-top: 0.5rem;
-  font-size: 3rem;
-  font-weight: bolder;
-  font-weight: 800;
+  ${({ similar }) =>
+    !similar &&
+    `
+    font-size: 3rem;
+    font-weight: 800;
+  `}
+  ${({ similar }) =>
+    similar &&
+    `
+    font-size: 0.9rem;
+    font-weight: inherit;
+  `}
 `;
 
 const Genres = styled.div`
@@ -152,10 +164,29 @@ const DetailItem = styled.div`
   margin-top: 1.2rem;
   font-weight: 400;
   line-height: 1.2;
+  ${({ similar }) =>
+    similar &&
+    `
+    font-size: 0.7rem;
+    margin-top: 0;
+    color: #f5f5f5;
+
+    &::before {
+      background-color: black;
+      border: 0 !important;
+      color: white;
+    }`}
 
   &::before {
     content: "${({ before }) => before}";
     ${badge};
+  }
+
+  &.similars {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
   }
 `;
 
@@ -202,8 +233,25 @@ const VideoInfo = styled.p`
   }
 `;
 
+const Similar = styled.div`
+  position: relative;
+  background-color: #2f2f2f;
+  padding-bottom: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:first-child {
+    grid-column: 1 / 2;
+  }
+
+  & :not(:first-child) {
+    padding: 0.5rem 1rem;
+  }
+`;
+
 function Details() {
   const detailMatch = useRouteMatch();
+  const searchMatch = useRouteMatch("/search");
   const history = useHistory();
   const {
     params: { id },
@@ -212,10 +260,12 @@ function Details() {
     isMovie = false,
     searchTerm = "";
   const { scrollY } = useViewportScroll();
+  const containerRef = useRef();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [details, setDetails] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [similars, setSimilars] = useState([]);
   const [title, setTitle] = useState("");
 
   if (history.location.state)
@@ -227,20 +277,28 @@ function Details() {
   else isMovie = history.location.pathname.includes("movie");
 
   useEffect(() => {
+    let results = null,
+      videos = null,
+      similars = null;
     (async () => {
-      let results = null,
-        videos = null;
       try {
+        if (isNaN(+id)) return null;
         if (!isMovie) {
           ({ data: results } = await tvApi.tvShowDetail(+id));
           ({
             data: { results: videos },
           } = await tvApi.getVideos(+id));
+          ({
+            data: { results: similars },
+          } = await tvApi.getSimilarTvShows(+id));
         } else {
           ({ data: results } = await moviesApi.movieDetail(+id));
           ({
             data: { results: videos },
           } = await moviesApi.getVideos(+id));
+          ({
+            data: { results: similars },
+          } = await moviesApi.getSimilarMovies(+id));
         }
         setDetails(
           results.images.logos.length > 0
@@ -249,7 +307,8 @@ function Details() {
         );
         setTitle(isMovie ? results.original_title : results.original_name);
         setVideos(videos.slice(0, 5));
-        setLoading(results && videos ? false : true);
+        setSimilars(noImage(similars).slice(0, 6));
+        setLoading(results && videos && similars ? false : true);
       } catch {
         setError(`[${id}] 정보를 찾을 수 없습니다.`);
       }
@@ -263,7 +322,15 @@ function Details() {
     });
   };
 
-  if (isNaN(+id)) return null;
+  const onSimilarCardClicked = (id) => {
+    containerRef.current.scrollTop = 0;
+    history.push({
+      pathname: `/${searchMatch ? "search" : isMovie ? "movie" : "tv"}/${id}`,
+      state: history.location.state,
+    });
+  };
+
+  // if (isNaN(+id)) return null;
   return (
     <>
       <Overlay
@@ -274,7 +341,7 @@ function Details() {
       <DeatilContainer
         layoutId={`${keyword}-${id}`}
         style={{ top: scrollY.get() + 25 }}
-        onWheel={() => {}}
+        ref={containerRef}
       >
         {loading ? (
           <Loader />
@@ -331,6 +398,33 @@ function Details() {
                           <VideoInfo>{val}</VideoInfo>
                         ))}
                       </VideoContainer>
+                    ))
+                  : "-"}
+              </DetailItem>
+              <DetailItem before={"More Like This"} className="similars">
+                {similars.length > 0
+                  ? similars.map((similar) => (
+                      <Similar
+                        title={
+                          !isMovie
+                            ? similar.original_name
+                            : similar.original_title
+                        }
+                        onClick={() => onSimilarCardClicked(similar.id)}
+                      >
+                        <Backdrop
+                          similar
+                          bgUrl={`https://image.tmdb.org/t/p/w500/${similar.backdrop_path}`}
+                        />
+                        <Title similar>
+                          {!isMovie
+                            ? similar.original_name
+                            : similar.original_title}
+                        </Title>
+                        <DetailItem similar before={"descripe"}>
+                          {similar.overview.length > 0 ? similar.overview : "-"}
+                        </DetailItem>
+                      </Similar>
                     ))
                   : "-"}
               </DetailItem>
