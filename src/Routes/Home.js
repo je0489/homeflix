@@ -1,84 +1,91 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { moviesApi } from "../api";
+import { noImage, top10 } from "../utils";
 
 import { DefaultContainer } from "../Components/GlobalStyles";
 
 const Container = styled.div`
   ${DefaultContainer}
-  position: relative;
+  display: flex;
+  overflow-x: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const Background = styled.div`
-  ${DefaultContainer}
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-position: center;
-  background-color: black;
-  background-image: url(${(props) => props.imageUrl});
+const Content = styled.div`
+  margin-bottom: 0.5rem;
+
+  h4 {
+    color: #ddd;
+    font-weight: 200;
+  }
+`;
+
+const movingPosters = (width) => keyframes`
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(calc(100vw - ${width}px));
+  }
+`;
+
+const Populars = styled.div`
+  display: flex;
+  padding: 2rem;
+  height: fit-content;
+  margin-bottom: 1rem;
+  animation: ${({ totalWidth }) => movingPosters(totalWidth)} 10s linear 1s
+    forwards alternate infinite;
+  place-self: flex-start;
+`;
+
+const Popular = styled.div`
+  background-image: url(${({ posterUrl }) => posterUrl});
   background-size: cover;
-  opacity: 0.5;
-  z-index: -2;
-`;
+  background-position: center center;
+  width: 15rem;
+  height: 22rem;
 
-const TextContainer = styled.div`
-  font-family: "Noto Sans KR", sans-serif;
-  position: absolute;
-  top: 40%;
-  left: 8%;
-  font-size: large;
-  letter-spacing: 0.05rem;
-
-  p {
-    margin-bottom: 0.5rem;
+  &:not(:last-child) {
+    margin-right: 1rem;
   }
-
-  p:last-of-type {
-    margin-bottom: 1.4rem;
-  }
-`;
-
-const HomeFilx = styled.span`
-  font-weight: bolder;
-  font-size: xx-large;
-  margin-right: 0.3rem;
 `;
 
 const MovieLink = styled(Link)`
-  background-color: transparent;
-  border: 1px solid #fff;
+  background-color: #e42414;
   border-radius: 3px;
-  padding: 0.3rem 1.5rem 0.4rem;
-  font-size: 0.95rem;
+  padding: 0.7rem 5rem;
   font-weight: 100;
-  opacity: 0.8;
-  z-index: 5;
   cursor: pointer;
-  transition: border 0.1s linear;
+  color: white;
 
   &:hover {
-    opacity: 0.6;
-  }
-
-  &:active {
-    border: 2px solid #fff;
+    opacity: 0.7;
   }
 `;
 
 function Home() {
-  const bgCount = 5;
-  const [bgImgOfPopular, setBgImgOfPopular] = useState([]);
+  const postersRef = useRef();
+  const [popularMovie, setPopularMovie] = useState([]);
+  const [totalWidth, setTotalWidth] = useState(10);
+
+  const getTotalPostersWidth = () => {
+    const { offsetWidth } = postersRef.current;
+    setTotalWidth(offsetWidth);
+  };
+
   useEffect(() => {
     (async () => {
       const {
         data: { results: popular },
       } = await moviesApi.popular();
-      setBgImgOfPopular(
-        popular.slice(0, bgCount).map((movie) => movie.backdrop_path)
-      );
+      setPopularMovie(top10(noImage(popular)));
+      getTotalPostersWidth();
     })();
   }, []);
   return (
@@ -87,22 +94,24 @@ function Home() {
         <title>Home - Homeflix</title>
       </Helmet>
       <Container>
-        {bgImgOfPopular && bgImgOfPopular.length > 0 && (
-          <Background
-            imageUrl={`https://image.tmdb.org/t/p/original${
-              bgImgOfPopular[Math.floor(Math.random() * bgImgOfPopular.length)]
-            }
-              `}
-          />
+        <Content>
+          <h1>보고 싶은 콘텐츠를 지금 만나보세요!</h1>
+        </Content>
+        <Content>
+          <h4>Homeflix에서 최신 인기 TV 프로그램, 영화, 해외 시리즈까지!</h4>
+        </Content>
+        {popularMovie && (
+          <Populars ref={postersRef} totalWidth={totalWidth}>
+            {popularMovie.map(({ poster_path: url }, idx) => (
+              <Popular
+                key={idx}
+                posterUrl={`https://image.tmdb.org/t/p/w500/${url}`}
+              ></Popular>
+            ))}
+          </Populars>
         )}
-      </Container>
-      <TextContainer>
-        <p>
-          <HomeFilx>HOMEFILX</HomeFilx>에서
-        </p>
-        <p>최신 인기 상영작을 만나보세요!</p>
         <MovieLink to="/movie">자세히 보기</MovieLink>
-      </TextContainer>
+      </Container>
     </>
   );
 }
