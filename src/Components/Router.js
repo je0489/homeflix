@@ -11,16 +11,17 @@ import TV from "../Routes/TV";
 import Movie from "../Routes/Movie";
 import Search from "../Routes/Search";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default () => (
-  <Router>
-    <Header />
-    <Switch>
-      <Route path="/" exact component={Home} />
-      <Route path={["/tv", "/tv/:id"]} exact component={TV} />
-      <Route path={["/movie", "/movie/:id"]} exact component={Movie} />
-      <Route path={["/search", "/search/:id"]} exact component={Search} />
-      <Redirect from="*" to="/" />
-    </Switch>
-  </Router>
-);
+export default function Routers() {
+  return (
+    <Router basename="/netflix-clone">
+      <Header />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path={["/tv", "/tv/:id"]} component={TV} />
+        <Route exact path={["/movie", "/movie/:id"]} component={Movie} />
+        <Route exact path={["/search", "/search/:id"]} component={Search} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    </Router>
+  );
+}
