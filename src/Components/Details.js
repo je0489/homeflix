@@ -313,6 +313,13 @@ function Details() {
         setError(`[${id}] 정보를 찾을 수 없습니다.`);
       }
     })();
+    return () => {
+      setTitle("");
+      setDetails({});
+      setVideos([]);
+      setSimilars([]);
+      setLoading(true);
+    };
   }, [isMovie, id]);
 
   const goBack = () => {
@@ -376,7 +383,7 @@ function Details() {
                   <Genre key={idx}>{name}</Genre>
                 ))}
               </Genres>
-              <DetailItem before={"descripe"}>
+              <DetailItem before={"Description"}>
                 {details.overview.length > 0 ? details.overview : "-"}
               </DetailItem>
               <DetailItem before={"Trailers & More"}>
@@ -394,17 +401,18 @@ function Details() {
                         >
                           <div />
                         </Thumbnail>
-                        {[name, published_at.split(" ")[0]].map((val) => (
-                          <VideoInfo>{val}</VideoInfo>
+                        {[name, published_at.split(" ")[0]].map((val, idx) => (
+                          <VideoInfo key={idx}>{val}</VideoInfo>
                         ))}
                       </VideoContainer>
                     ))
                   : "-"}
               </DetailItem>
-              <DetailItem before={"More Like This"} className="similars">
+              <DetailItem className="similars" before={"More Like This"}>
                 {similars.length > 0
-                  ? similars.map((similar) => (
+                  ? similars.map((similar, idx) => (
                       <Similar
+                        key={idx}
                         title={
                           !isMovie
                             ? similar.original_name
@@ -421,7 +429,7 @@ function Details() {
                             ? similar.original_name
                             : similar.original_title}
                         </Title>
-                        <DetailItem similar before={"descripe"}>
+                        <DetailItem similar before={"Description"}>
                           {similar.overview.length > 0 ? similar.overview : "-"}
                         </DetailItem>
                       </Similar>
