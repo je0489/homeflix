@@ -3,7 +3,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
 import { tvApi, moviesApi } from "../api";
-import { noImage } from "../utils";
+import { noImage, makeImageFullUrl, makeYoutubeUrl } from "../utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -69,16 +69,19 @@ const Backdrop = styled.div`
 `;
 
 const LogoImage = styled.div`
-  ${({ logo }) => logo === ""} {
-    background-image: url(${({ logo }) =>
-      `https://image.tmdb.org/t/p/w500/${logo.file_path}`});
+  ${({ logo }) => !logo} {
+    background-image: url(${({ logo: { file_path } }) =>
+      makeImageFullUrl(file_path, "w500")});
     width: 20rem;
-    height: ${({ logo }) => `${(logo.height / logo.width) * 20.83}rem`};
+    height: ${({ logo: { height, width } }) =>
+      `${(height / width) * 20.83}rem`};
   }
-  ${({ logo }) => logo !== ""} {
+
+  ${({ logo }) => logo} {
     font-size: 3rem;
     font-weight: bolder;
   }
+
   background-size: contain;
   background-repeat: no-repeat;
   right: 1.5rem;
@@ -263,7 +266,7 @@ function Details() {
   const containerRef = useRef();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [details, setDetails] = useState([]);
+  const [details, setDetails] = useState({});
   const [videos, setVideos] = useState([]);
   const [similars, setSimilars] = useState([]);
   const [title, setTitle] = useState("");
@@ -337,7 +340,6 @@ function Details() {
     });
   };
 
-  // if (isNaN(+id)) return null;
   return (
     <>
       <Overlay
@@ -354,9 +356,7 @@ function Details() {
           <Loader />
         ) : (
           <>
-            <Backdrop
-              bgUrl={`https://image.tmdb.org/t/p/original/${details.backdrop_path}`}
-            >
+            <Backdrop bgUrl={makeImageFullUrl(details.backdrop_path)}>
               <CloseButton onClick={goBack}>
                 <FontAwesomeIcon icon={faTimes} className="fa-times" />
               </CloseButton>
@@ -393,12 +393,10 @@ function Details() {
                         key={key}
                         title={name}
                         onClick={() =>
-                          window.open(`https://www.youtube.com/watch?v=${key}`)
+                          window.open(makeYoutubeUrl("video", key))
                         }
                       >
-                        <Thumbnail
-                          url={`https://img.youtube.com/vi/${key}/0.jpg`}
-                        >
+                        <Thumbnail url={makeYoutubeUrl("thumnail", key)}>
                           <div />
                         </Thumbnail>
                         {[name, published_at.split(" ")[0]].map((val, idx) => (
@@ -422,7 +420,10 @@ function Details() {
                       >
                         <Backdrop
                           similar
-                          bgUrl={`https://image.tmdb.org/t/p/w500/${similar.backdrop_path}`}
+                          bgUrl={makeImageFullUrl(
+                            similar.backdrop_path,
+                            "w500"
+                          )}
                         />
                         <Title similar>
                           {!isMovie

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { makeImageFullUrl } from "../utils";
 import InfoCard from "./InfoCard";
 
 const Container = styled(motion.div)`
@@ -66,6 +67,22 @@ const Card = styled(motion.div)`
   border-radius: 4px;
   background-position: center center;
   cursor: pointer;
+
+  ${({ isPopular }) =>
+    isPopular &&
+    css`
+      &::before {
+        content: "${({ rank }) => rank}";
+        font-size: 9rem;
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 3px #f9f9f9;
+        display: flex;
+        justify-content: end;
+        line-height: normal;
+        position: absolute;
+      }
+    `}
 
   &:first-child {
     transform-origin: center left;
@@ -179,7 +196,7 @@ const Section = ({ title, keyword, cards, isMovie }) => {
             <Card
               key={card.id}
               layoutId={`${keyword}-${String(card.id)}`}
-              bgUrl={`https://image.tmdb.org/t/p/w300${card.backdrop_path}`}
+              bgUrl={makeImageFullUrl(card.backdrop_path, "w300")}
               variants={cardVariants}
               whileHover="hover"
               initial="normal"
