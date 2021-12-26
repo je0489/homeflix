@@ -70,8 +70,8 @@ function Movie() {
 
   const moveToDetail = (id) => {
     history.push({
-      pathname: `/tv/${id}`,
-      state: { isMovie: false },
+      pathname: `/movie/${id}`,
+      state: { isMovie: true },
     });
   };
 
