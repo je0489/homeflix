@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 import styled, { keyframes } from "styled-components";
 import { moviesApi } from "../api";
-import { noImage, top10 } from "../utils";
-
-import { DefaultContainer } from "../Components/GlobalStyles";
+import { noImage, top10, makeImageFullUrl } from "../utils";
 
 const Container = styled.div`
-  ${DefaultContainer}
+  width: 100%;
+  height: calc(100vh - 64px);
   display: flex;
   overflow-x: hidden;
   flex-direction: column;
@@ -88,6 +87,7 @@ function Home() {
       getTotalPostersWidth();
     })();
   }, []);
+
   return (
     <>
       <Helmet>
@@ -102,10 +102,10 @@ function Home() {
         </Content>
         {popularMovie && (
           <Populars ref={postersRef} totalWidth={totalWidth}>
-            {popularMovie.map(({ poster_path: url }, idx) => (
+            {popularMovie.map(({ poster_path }, idx) => (
               <Popular
                 key={idx}
-                posterUrl={`https://image.tmdb.org/t/p/w500/${url}`}
+                posterUrl={makeImageFullUrl(poster_path, "w500")}
               ></Popular>
             ))}
           </Populars>
