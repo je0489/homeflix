@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import { moviesApi } from "../api";
 import { noImage, top10 } from "../utils";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 import Loader from "../Components/Loader";
 import Billboard from "../Components/Billboard";
@@ -14,6 +18,33 @@ const Wrapper = styled.div`
   position: absolute;
   width: 100%;
   top: 0;
+`;
+
+const MainBillboardContiner = styled.div`
+  position: absolute;
+  left: 4.5rem;
+  bottom: 18%;
+  font-weight: 200;
+  width: 18rem;
+  line-height: 1.2;
+`;
+
+const MoveToDetailButton = styled.div`
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 9.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+
+  &::after {
+    content: "상세 정보";
+    font-weight: 600;
+    padding: 0.1rem 0.2rem 0;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -30,6 +61,19 @@ function Movie() {
   const [upcoming, setUpcoming] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const history = useHistory();
+
+  const maxOverViewLength = ({ overview }) => {
+    const offset = 100;
+    return overview.length > offset ? overview.indexOf(".", offset) : offset;
+  };
+
+  const moveToDetail = (id) => {
+    history.push({
+      pathname: `/tv/${id}`,
+      state: { isMovie: false },
+    });
+  };
 
   useEffect(() => {
     setRandom(Math.floor(Math.random() * offset));
@@ -92,7 +136,20 @@ function Movie() {
               bgUrl={billboard.backdrop_path}
               logos={billboard.images.logos}
               title={billboard.original_title}
-            />
+            >
+              <MainBillboardContiner>
+                <MoveToDetailButton onClick={() => moveToDetail(billboard.id)}>
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    className="fa-info-circle"
+                  />
+                </MoveToDetailButton>
+                {billboard.overview.length > maxOverViewLength(billboard)
+                  ? billboard.overview.slice(0, maxOverViewLength(billboard)) +
+                    "..."
+                  : billboard.overview}
+              </MainBillboardContiner>
+            </Billboard>
           )}
           <CardContainer>
             {popular && popular.length > 0 && (
