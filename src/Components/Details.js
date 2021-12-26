@@ -3,13 +3,14 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
 import { tvApi, moviesApi } from "../api";
-import { noImage, makeImageFullUrl, makeYoutubeUrl } from "../utils";
+import { noImage, makeYoutubeUrl } from "../utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import Loader from "../Components/Loader";
-import ErrorMsg from "../Components/ErrorMsg";
+import Loader from "./Loader";
+import ErrorMsg from "./ErrorMsg";
+import Billboard from "./Billboard";
 
 const badge = css`
   display: flex;
@@ -51,43 +52,6 @@ const DeatilContainer = styled(motion.div)`
   overflow: auto;
 `;
 
-const Backdrop = styled.div`
-  position: relative;
-  display: flex;
-  height: ${({ similar }) => (!similar ? "60vh" : "8.5rem")};
-  flex-direction: column;
-  justify-content: center;
-  background-image: ${({ similar }) =>
-      !similar ? "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1))," : null}
-    url(${(props) => props.bgUrl});
-  border-radius: 4px;
-  background-size: cover;
-
-  & > * {
-    position: absolute;
-  }
-`;
-
-const LogoImage = styled.div`
-  ${({ logo }) => !logo} {
-    background-image: url(${({ logo: { file_path } }) =>
-      makeImageFullUrl(file_path, "w500")});
-    width: 20rem;
-    height: ${({ logo: { height, width } }) =>
-      `${(height / width) * 20.83}rem`};
-  }
-
-  ${({ logo }) => logo} {
-    font-size: 3rem;
-    font-weight: bolder;
-  }
-
-  background-size: contain;
-  background-repeat: no-repeat;
-  right: 1.5rem;
-  bottom: 1rem;
-`;
-
 const CloseButton = styled.div`
   display: flex;
   align-items: center;
@@ -110,7 +74,7 @@ const CloseButton = styled.div`
 
 const Detail = styled.div`
   background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-  padding: 2rem;
+  padding: 1rem 2rem;
   font-weight: 100;
 `;
 
@@ -303,11 +267,7 @@ function Details() {
             data: { results: similars },
           } = await moviesApi.getSimilarMovies(+id));
         }
-        setDetails(
-          results.images.logos.length > 0
-            ? { ...results }
-            : { ...results, ...{ images: { logos: [""] } } }
-        );
+        setDetails(results);
         setTitle(isMovie ? results.original_title : results.original_name);
         setVideos(videos.slice(0, 5));
         setSimilars(noImage(similars).slice(0, 6));
@@ -356,16 +316,15 @@ function Details() {
           <Loader />
         ) : (
           <>
-            <Backdrop bgUrl={makeImageFullUrl(details.backdrop_path)}>
+            <Billboard
+              bgUrl={details.backdrop_path}
+              logos={details.images.logos}
+              title={title}
+            >
               <CloseButton onClick={goBack}>
                 <FontAwesomeIcon icon={faTimes} className="fa-times" />
               </CloseButton>
-              <LogoImage
-                logo={details.images.logos[details.images.logos.length - 1]}
-              >
-                {details.images.logos[0] === "" ? title : ""}
-              </LogoImage>
-            </Backdrop>
+            </Billboard>
             <Detail>
               <Date>
                 {!isMovie ? (
@@ -418,13 +377,7 @@ function Details() {
                         }
                         onClick={() => onSimilarCardClicked(similar.id)}
                       >
-                        <Backdrop
-                          similar
-                          bgUrl={makeImageFullUrl(
-                            similar.backdrop_path,
-                            "w500"
-                          )}
-                        />
+                        <Billboard similar bgUrl={similar.backdrop_path} />
                         <Title similar>
                           {!isMovie
                             ? similar.original_name
