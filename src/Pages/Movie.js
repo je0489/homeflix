@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
-import { tvApi } from "../api";
+import { moviesApi } from "../api";
 import { noImage, top10 } from "../utils";
 
 import Loader from "../Components/Loader";
@@ -10,30 +10,31 @@ import Detail from "../Components/Detail";
 import ErrorMsg from "../Components/ErrorMsg";
 
 const Container = styled.div`
-  padding: 1.2rem;
+  padding: 0 1.2rem;
 `;
 
-function TV() {
+function Movie() {
+  const [popular, setPopular] = useState([]);
+  const [nowPlaying, setNowPlaying] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [popular, setPopular] = useState([]);
-  const [topRated, setTopRated] = useState([]);
-  const [airingToday, setAiringToday] = useState([]);
+
   useEffect(() => {
     (async () => {
       try {
         const {
           data: { genres },
-        } = await tvApi.getGenres();
+        } = await moviesApi.getGenres();
         const {
           data: { results: popular },
-        } = await tvApi.popular();
+        } = await moviesApi.popular();
         const {
-          data: { results: topRated },
-        } = await tvApi.topRated();
+          data: { results: nowPlaying },
+        } = await moviesApi.nowPlaying();
         const {
-          data: { results: airingToday },
-        } = await tvApi.airingToday();
+          data: { results: upcoming },
+        } = await moviesApi.upcoming();
 
         const createGenreKey = (datas) =>
           datas.map((data) => {
@@ -47,18 +48,20 @@ function TV() {
           });
 
         setPopular(createGenreKey(top10(noImage(popular))));
-        setTopRated(createGenreKey(noImage(topRated)));
-        setAiringToday(createGenreKey(noImage(airingToday)));
-        setLoading(popular && topRated && airingToday ? false : true);
-      } catch {
-        setError("오류가 발생했습니다! TV 프로그램 정보를 찾을 수 없습니다.");
+        setNowPlaying(createGenreKey(noImage(nowPlaying)));
+        setUpcoming(createGenreKey(noImage(upcoming)));
+        setLoading(popular && nowPlaying && upcoming ? false : true);
+      } catch (e) {
+        console.log(e);
+        setError("오류가 발생했습니다! 영화 정보를 찾을 수 없습니다.");
       }
     })();
   }, []);
+
   return (
     <>
       <Helmet>
-        <title>TV - Homeflix</title>
+        <title>Movie - Homeflix</title>
       </Helmet>
       {loading ? (
         <Loader />
@@ -66,23 +69,24 @@ function TV() {
         <Container>
           {popular && popular.length > 0 && (
             <Section
-              title="오늘 TOP 10 TV 프로그램"
-              keyword={"popular"}
+              title="오늘 TOP 10 영화"
+              keyword="popular"
               cards={popular}
+              isPopular
             />
           )}
-          {topRated && topRated.length > 0 && (
+          {nowPlaying && nowPlaying.length > 0 && (
             <Section
-              title="꾸준히 인기 많은 TV 프로그램"
-              keyword={"topRated"}
-              cards={topRated}
+              title="지금 상영 중인 영화"
+              keyword="nowPlaying"
+              cards={nowPlaying}
             />
           )}
-          {airingToday && airingToday.length > 0 && (
+          {upcoming && upcoming.length > 0 && (
             <Section
-              title="현재 방영 중인 TV 프로그램"
-              keyword={"airingToday"}
-              cards={airingToday}
+              title="최근에 개봉한 영화"
+              keyword="upcoming"
+              cards={upcoming}
             />
           )}
           <Detail />
@@ -93,4 +97,4 @@ function TV() {
   );
 }
 
-export default TV;
+export default Movie;
