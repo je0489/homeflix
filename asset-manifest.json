@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/netflix-clone/static/js/main.cd9a8e6b.chunk.js",
-    "main.js.map": "/netflix-clone/static/js/main.cd9a8e6b.chunk.js.map",
-    "runtime-main.js": "/netflix-clone/static/js/runtime-main.81eeced7.js",
-    "runtime-main.js.map": "/netflix-clone/static/js/runtime-main.81eeced7.js.map",
-    "static/js/2.3a088dd6.chunk.js": "/netflix-clone/static/js/2.3a088dd6.chunk.js",
-    "static/js/2.3a088dd6.chunk.js.map": "/netflix-clone/static/js/2.3a088dd6.chunk.js.map",
-    "index.html": "/netflix-clone/index.html",
-    "static/js/2.3a088dd6.chunk.js.LICENSE.txt": "/netflix-clone/static/js/2.3a088dd6.chunk.js.LICENSE.txt"
+    "main.js": "/homeflix/static/js/main.904b97b9.chunk.js",
+    "main.js.map": "/homeflix/static/js/main.904b97b9.chunk.js.map",
+    "runtime-main.js": "/homeflix/static/js/runtime-main.59936450.js",
+    "runtime-main.js.map": "/homeflix/static/js/runtime-main.59936450.js.map",
+    "static/js/2.4cb4d70a.chunk.js": "/homeflix/static/js/2.4cb4d70a.chunk.js",
+    "static/js/2.4cb4d70a.chunk.js.map": "/homeflix/static/js/2.4cb4d70a.chunk.js.map",
+    "index.html": "/homeflix/index.html",
+    "static/js/2.4cb4d70a.chunk.js.LICENSE.txt": "/homeflix/static/js/2.4cb4d70a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.81eeced7.js",
-    "static/js/2.3a088dd6.chunk.js",
-    "static/js/main.cd9a8e6b.chunk.js"
+    "static/js/runtime-main.59936450.js",
+    "static/js/2.4cb4d70a.chunk.js",
+    "static/js/main.904b97b9.chunk.js"
   ]
 }
