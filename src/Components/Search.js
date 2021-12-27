@@ -53,6 +53,7 @@ const Search = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!searchTerm.trim()) return alert("검색어를 입력하세요!");
     history.push({ pathname: "/search", state: { searchTerm } });
   };
 
