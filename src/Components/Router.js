@@ -13,7 +13,7 @@ import Search from "../Pages/Search";
 
 export default function Routers() {
   return (
-    <Router basename="/netflix-clone">
+    <Router basename="/homeflix">
       <Header />
       <Switch>
         <Route exact path="/" component={Home} />
