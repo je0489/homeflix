@@ -13,9 +13,16 @@ const globalStyles = createGlobalStyle`
     body {
         font-family: sans-serif;
         font-size: 16px;
-        background-color: rgba(20, 20, 20, 1);
+        background-color: black;
         color: white;
         padding-top: 60px;
+        word-break: keep-all;
+        height: 100%;
+    }
+    h1 {
+        font-size: 1.7rem;
+        font-weight: bolder;
+        letter-spacing: 0.1rem;
     }
 `;
 

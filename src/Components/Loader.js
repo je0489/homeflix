@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { DefaultContainer } from "./GlobalStyles";
 
 const Container = styled.div`
-  ${DefaultContainer}
+  width: 100%;
+  height: calc(100vh - 64px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +48,8 @@ const Loading = styled.div`
   &::before {
     content: "LOADING";
     position: absolute;
-    left: -1.5rem;
+    left: -1.9rem;
+    bottom: -1.2rem;
     font-size: 1.56rem;
     letter-spacing: 3px;
   }
@@ -87,6 +88,7 @@ const Loading = styled.div`
   }
 `;
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => (
   <Container>
     <Box>

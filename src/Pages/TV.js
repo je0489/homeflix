@@ -22,8 +22,8 @@ const Wrapper = styled.div`
 
 const MainBillboardContiner = styled.div`
   position: absolute;
-  left: 4.5rem;
-  bottom: 18%;
+  left: 3.5rem;
+  bottom: 13%;
   font-weight: 200;
   width: 18rem;
   line-height: 1.2;

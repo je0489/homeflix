@@ -22,8 +22,8 @@ const Wrapper = styled.div`
 
 const MainBillboardContiner = styled.div`
   position: absolute;
-  left: 4.5rem;
-  bottom: 18%;
+  left: 3.5rem;
+  bottom: 15%;
   font-weight: 200;
   width: 18rem;
   line-height: 1.2;
@@ -39,6 +39,7 @@ const MoveToDetailButton = styled.div`
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.6);
   font-size: 1.2rem;
+  cursor: pointer;
 
   &::after {
     content: "상세 정보";

@@ -16,9 +16,23 @@ const Container = styled.div`
 
 const SearchTerm = styled.div`
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 1rem 0;
   font-weight: 100;
   .term {
-    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.3rem 0.6rem 0.1rem;
+    margin-bottom: 0.2rem;
+    background-color: #e42414;
+    border-radius: 12px;
+
+    &::before {
+      content: "#";
+    }
   }
 `;
 
@@ -66,6 +80,7 @@ function Search() {
         setTvResults(createGenreKey(noImage(tvResults), false));
         setMovieResults(createGenreKey(noImage(movieResults), true));
         setLoading(tvResults && movieResults ? false : true);
+        setError("");
       } catch {
         setError(
           "오류가 발생했습니다! 입력한 검색어에 대한 결과를 찾을 수 없습니다."
@@ -82,7 +97,7 @@ function Search() {
       ) : (
         <Container>
           <SearchTerm>
-            검색어 "<p className="term">{searchTerm}</p>"에 대한 검색
+            검색어 &nbsp;<p className="term">{searchTerm}</p>&nbsp;에 대한 검색
             결과입니다.
           </SearchTerm>
           {loading ? (

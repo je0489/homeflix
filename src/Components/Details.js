@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
 import { tvApi, moviesApi } from "../api";
 import { noImage, makeYoutubeUrl } from "../utils";
@@ -12,7 +12,7 @@ import Loader from "./Loader";
 import ErrorMsg from "./ErrorMsg";
 import Billboard from "./Billboard";
 
-const badge = css`
+const badge = `
   display: flex;
   width: fit-content;
   align-items: center;
@@ -95,14 +95,12 @@ const Date = styled.div`
 const Title = styled.div`
   margin-top: 0.5rem;
   ${({ similar }) =>
-    !similar &&
-    `
+    !similar
+      ? `
     font-size: 3rem;
     font-weight: 800;
-  `}
-  ${({ similar }) =>
-    similar &&
-    `
+  `
+      : `
     font-size: 0.9rem;
     font-weight: inherit;
   `}

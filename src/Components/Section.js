@@ -19,10 +19,11 @@ const Container = styled(motion.div)`
 const Title = styled.span`
   font-weight: 600;
   font-size: 1.12rem;
+  margin-left: 0.4rem;
 `;
 
 const RowContainer = styled(motion.div)`
-  top: 1.8rem;
+  top: 2rem;
   width: 100%;
   position: absolute;
   display: grid;
@@ -30,7 +31,7 @@ const RowContainer = styled(motion.div)`
   gap: 0.625rem;
 `;
 
-const Button = styled.div`
+const MoveButton = styled.div`
   position: absolute;
   top: 50%;
   cursor: pointer;
@@ -173,11 +174,11 @@ const Section = ({ title, keyword, cards, isMovie }) => {
   return (
     <Container>
       <Title>{title}</Title>
-      <Button
+      <MoveButton
         position={"left"}
         onClick={moveToLeft}
         className={currentPosition === position.left ? "hidden" : ""}
-      >{`<`}</Button>
+      >{`<`}</MoveButton>
       <AnimatePresence
         custom={back}
         initial={false}
@@ -221,11 +222,11 @@ const Section = ({ title, keyword, cards, isMovie }) => {
           ))}
         </RowContainer>
       </AnimatePresence>
-      <Button
+      <MoveButton
         position={"right"}
         onClick={moveToRight}
         className={currentPosition === position.right ? "hidden" : ""}
-      >{`>`}</Button>
+      >{`>`}</MoveButton>
     </Container>
   );
 };
@@ -234,6 +235,7 @@ Section.propTypes = {
   title: PropTypes.string.isRequired,
   keyword: PropTypes.string.isRequired,
   cards: PropTypes.array,
+  isPopular: PropTypes.bool,
   isMovie: PropTypes.bool,
 };
 

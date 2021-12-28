@@ -3,9 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Search from "./Search";
 
-const logo_src = "logo__longer.png",
-  normal = 100,
-  bolder = 600;
+const logo_src = "logo_default.png";
 
 const Header = styled.header`
   position: fixed;
@@ -20,14 +18,19 @@ const Header = styled.header`
   color: white;
   background-color: rgba(20, 20, 20, 0.8);
   box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.8);
-  z-index: 10;
+  z-index: 5;
 `;
 
-const Main = styled.div`
+const Logo = styled.div`
   padding: 0 1rem;
+
+  a {
+    display: flex;
+  }
 
   & img {
     width: 8rem;
+    align-items: center;
   }
 `;
 
@@ -37,11 +40,10 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
-  padding: 0 20px;
+  padding: 0 1.25rem;
   height: 3.75rem;
   text-align: center;
-  text-transform: uppercase;
-  font-weight: ${(props) => (props.isCurrent ? `${bolder}` : `${normal}`)};
+  font-weight: ${(props) => (props.isCurrent ? 600 : 100)};
   transition: 0.4s ease-out;
 
   & > * {
@@ -63,11 +65,11 @@ const Item = styled.li`
 
 export default withRouter(({ location: { pathname } }) => (
   <Header>
-    <Main>
+    <Logo>
       <Link to="/">
         <img src={logo_src} alt="logo" />
       </Link>
-    </Main>
+    </Logo>
     <List>
       <Item isCurrent={pathname === "/"}>
         <Link to="/"> 홈</Link>
