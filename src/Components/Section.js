@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
@@ -37,7 +37,6 @@ const MoveButton = styled.div`
   cursor: pointer;
   font-size: 3rem;
   font-weight: 900;
-  transition: opacity step-end 1s;
   z-index: 3;
 
   ${(props) => props.position === "left"} {
@@ -126,14 +125,18 @@ const cardVariants = {
 const Section = ({ title, keyword, cards, isMovie }) => {
   const offset = 5,
     maxIndex = Math.ceil(cards.length / offset) - 1,
-    position = { left: "left", right: "right", both: "both" };
+    position = { left: "left", right: "right", both: "both", none: "none" };
   const history = useHistory();
   const movieMatch = useRouteMatch("/movie");
   const searchMatch = useRouteMatch("/search");
   const [index, setIndex] = useState(0);
   const [exit, setExit] = useState(false);
   const [back, setBack] = useState(false);
-  const [currentPosition, setCurrentPosition] = useState(position.left);
+  const [currentPosition, setCurrentPosition] = useState(position.none);
+
+  useEffect(() => {
+    if (cards.length > 5) setCurrentPosition(position.left);
+  }, [cards.length, position.left]);
 
   const settingCurrentPosition = (sum) => {
     if (exit) return;
@@ -177,7 +180,11 @@ const Section = ({ title, keyword, cards, isMovie }) => {
       <MoveButton
         position={"left"}
         onClick={moveToLeft}
-        className={currentPosition === position.left ? "hidden" : ""}
+        className={
+          [position.left, position.none].includes(currentPosition)
+            ? "hidden"
+            : ""
+        }
       >{`<`}</MoveButton>
       <AnimatePresence
         custom={back}
@@ -225,7 +232,11 @@ const Section = ({ title, keyword, cards, isMovie }) => {
       <MoveButton
         position={"right"}
         onClick={moveToRight}
-        className={currentPosition === position.right ? "hidden" : ""}
+        className={
+          [position.right, position.none].includes(currentPosition)
+            ? "hidden"
+            : ""
+        }
       >{`>`}</MoveButton>
     </Container>
   );
