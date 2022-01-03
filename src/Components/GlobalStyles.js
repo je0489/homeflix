@@ -24,6 +24,15 @@ const globalStyles = createGlobalStyle`
         font-weight: bolder;
         letter-spacing: 0.1rem;
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        h1 {
+            font-size: 1.1rem;
+        }
+        h4 {
+            font-size: 0.8rem;
+        }
+    }
 `;
 
 export default globalStyles;
