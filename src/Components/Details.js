@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
 import { tvApi, moviesApi } from "../api";
@@ -215,15 +215,12 @@ const Similar = styled.div`
 `;
 
 function Details() {
-  const detailMatch = useRouteMatch();
+  const detailParam = useParams();
   const searchMatch = useRouteMatch("/search");
   const history = useHistory();
-  const {
-    params: { id },
-  } = detailMatch;
+  const { id } = detailParam;
   let keyword = "",
-    isMovie = false,
-    searchTerm = "";
+    isMovie = false;
   const { scrollY } = useViewportScroll();
   const containerRef = useRef();
   const [loading, setLoading] = useState(true);
@@ -236,7 +233,7 @@ function Details() {
   if (history.location.state)
     ({
       location: {
-        state: { keyword, isMovie, searchTerm },
+        state: { keyword, isMovie },
       },
     } = history);
   else isMovie = history.location.pathname.includes("movie");
@@ -284,15 +281,12 @@ function Details() {
   }, [isMovie, id]);
 
   const goBack = () => {
-    history.push({
-      pathname: `/${detailMatch.path.replace(/\/|:id/g, "")}`,
-      state: { searchTerm },
-    });
+    history.goBack();
   };
 
   const onSimilarCardClicked = (id) => {
     containerRef.current.scrollTop = 0;
-    history.push({
+    history.replace({
       pathname: `/${searchMatch ? "search" : isMovie ? "movie" : "tv"}/${id}`,
       state: history.location.state,
     });
