@@ -87,6 +87,11 @@ function Search() {
         );
       }
     })();
+    return () => {
+      setLoading(true);
+      setTvResults([]);
+      setMovieResults([]);
+    };
   }, [searchTerm]);
 
   return (
