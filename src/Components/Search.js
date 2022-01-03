@@ -6,6 +6,9 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Form = styled.form`
   display: flex;
+  font-size: 1.2rem;
+  align-items: center;
+  margin-left: 0.5rem;
 `;
 
 const IconContainer = styled.div`
