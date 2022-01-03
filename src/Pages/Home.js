@@ -13,6 +13,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 `;
 
 const Content = styled.div`
@@ -53,10 +54,15 @@ const Popular = styled.div`
   &:not(:last-child) {
     margin-right: 1rem;
   }
+
+  @media ${({ theme }) => theme.mobile} {
+    width: 11rem;
+    height: 16.1rem;
+  }
 `;
 
 const MovieLink = styled(Link)`
-  background-color: #e42414;
+  background-color: ${({ theme }) => theme.accentColor};
   border-radius: 3px;
   padding: 0.7rem 5rem;
   font-weight: 100;
