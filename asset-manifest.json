@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/homeflix/static/js/main.6a974134.chunk.js",
-    "main.js.map": "/homeflix/static/js/main.6a974134.chunk.js.map",
+    "main.js": "/homeflix/static/js/main.b9f7c456.chunk.js",
+    "main.js.map": "/homeflix/static/js/main.b9f7c456.chunk.js.map",
     "runtime-main.js": "/homeflix/static/js/runtime-main.59936450.js",
     "runtime-main.js.map": "/homeflix/static/js/runtime-main.59936450.js.map",
-    "static/js/2.b8dbc04e.chunk.js": "/homeflix/static/js/2.b8dbc04e.chunk.js",
-    "static/js/2.b8dbc04e.chunk.js.map": "/homeflix/static/js/2.b8dbc04e.chunk.js.map",
+    "static/js/2.d9c8a8bd.chunk.js": "/homeflix/static/js/2.d9c8a8bd.chunk.js",
+    "static/js/2.d9c8a8bd.chunk.js.map": "/homeflix/static/js/2.d9c8a8bd.chunk.js.map",
     "index.html": "/homeflix/index.html",
-    "static/js/2.b8dbc04e.chunk.js.LICENSE.txt": "/homeflix/static/js/2.b8dbc04e.chunk.js.LICENSE.txt"
+    "static/js/2.d9c8a8bd.chunk.js.LICENSE.txt": "/homeflix/static/js/2.d9c8a8bd.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.59936450.js",
-    "static/js/2.b8dbc04e.chunk.js",
-    "static/js/main.6a974134.chunk.js"
+    "static/js/2.d9c8a8bd.chunk.js",
+    "static/js/main.b9f7c456.chunk.js"
   ]
 }
