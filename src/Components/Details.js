@@ -216,7 +216,7 @@ const Similar = styled.div`
 
 function Details() {
   const detailParam = useParams();
-  const searchMatch = useRouteMatch("/search");
+  const detailMatch = useRouteMatch();
   const history = useHistory();
   const { id } = detailParam;
   let keyword = "",
@@ -287,7 +287,7 @@ function Details() {
   const onSimilarCardClicked = (id) => {
     containerRef.current.scrollTop = 0;
     history.replace({
-      pathname: `/${searchMatch ? "search" : isMovie ? "movie" : "tv"}/${id}`,
+      pathname: detailMatch.path.replace(/:id/, id),
       state: history.location.state,
     });
   };
