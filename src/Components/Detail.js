@@ -5,7 +5,12 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Details from "./Details";
 
 function Deatil() {
-  const detailMatch = useRouteMatch(["/tv/:id", "/movie/:id", "/search/:id"]);
+  const detailMatch = useRouteMatch([
+    "/tv/:id",
+    "/movie/:id",
+    "/trending/:id",
+    "/search/:id",
+  ]);
   detailMatch
     ? disableBodyScroll(document.body)
     : enableBodyScroll(document.body);

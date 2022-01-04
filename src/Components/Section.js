@@ -127,8 +127,9 @@ const Section = ({ title, keyword, cards, isMovie }) => {
     maxIndex = Math.ceil(cards.length / offset) - 1,
     position = { left: "left", right: "right", both: "both", none: "none" };
   const history = useHistory();
+  const sectionMatch = useRouteMatch();
   const movieMatch = useRouteMatch("/movie");
-  const searchMatch = useRouteMatch("/search");
+  const trendingMatch = useRouteMatch("/trending");
   const [index, setIndex] = useState(0);
   const [exit, setExit] = useState(false);
   const [back, setBack] = useState(false);
@@ -169,7 +170,7 @@ const Section = ({ title, keyword, cards, isMovie }) => {
 
   const onCardClicked = (isMovie, id, { searchTerm } = "") => {
     history.push({
-      pathname: `/${searchMatch ? "search" : isMovie ? "movie" : "tv"}/${id}`,
+      pathname: sectionMatch.path + `/${id}`,
       state: { keyword, isMovie, searchTerm },
     });
   };
@@ -211,7 +212,11 @@ const Section = ({ title, keyword, cards, isMovie }) => {
               transition={{ type: "tween" }}
               onClick={() =>
                 onCardClicked(
-                  searchMatch ? isMovie : movieMatch !== null,
+                  isMovie
+                    ? isMovie
+                    : trendingMatch
+                    ? card.media_type === "movie"
+                    : movieMatch !== null,
                   card.id,
                   history.location.state
                 )
@@ -219,7 +224,13 @@ const Section = ({ title, keyword, cards, isMovie }) => {
             >
               <InfoCard
                 title={
-                  (searchMatch ? isMovie : movieMatch !== null)
+                  (
+                    isMovie
+                      ? isMovie
+                      : trendingMatch
+                      ? card.media_type === "movie"
+                      : movieMatch !== null
+                  )
                     ? card.original_title
                     : card.original_name
                 }
