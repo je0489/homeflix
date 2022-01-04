@@ -52,3 +52,9 @@ export const moviesApi = {
       },
     }),
 };
+
+export const trandingApi = {
+  trendyAll: () => api.get("trending/all/week"),
+  trendyTvShows: () => api.get("trending/tv/week"),
+  trendyMovies: () => api.get("trending/movie/week"),
+};
