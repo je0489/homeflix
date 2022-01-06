@@ -1,24 +1,25 @@
 ![homeflix-title](./readme/homeflix-title.png)
 
-# 🎥  **homeflix**
+# 🎥 **homeflix**
 
 ## 1. 프로젝트 소개
 
 TMBD API를 사용해 최신 TV 프로그램과 상영작 정보를 알려주는 웹 서비스로, netflix-clone 프로젝트입니다. 기존에 **클래스**로 구현했던 프로젝트를 **함수형**으로 변경하여 재구현했습니다. [> homeflix 프로젝트 바로가기!](https://je0489.github.io/homeflix/)
 
 ## 2. 기술 스택
+
 <img alt="React" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/> <img alt="React" src ="https://img.shields.io/badge/styledComponents-DB7093.svg?&style=for-the-badge&logo=styled-components&logoColor=white"/> <img alt="React" src ="https://img.shields.io/badge/The Movie Database-191A1B.svg?&style=for-the-badge&logo=The Movie Database&logoColor=white"/>
 
 ## 3. 화면 별 설명
 
-### 3-1. 홈   
+### 3-1. 홈
 
-- laptop/mobile 화면   
+- laptop/mobile 화면
 <div style="display:flex; align-items:start; margin: 0.5rem 0">
     <img src="./readme/home_laptop-version.png" alt="home-page-in-laptop" width="70%">
     <img src="./readme/home_mobile-version.jpg" alt="home-page-in-mobile" style="width:25%; margin-left: 0.3rem">
 </div>
-      
+
 ① 최신 인기 상영작 TOP 10 목록을 애니메이션을 적용하여 구현  
 ② useRef를 사용하여 어떤 크기의 기기를 사용해도 top 10 목록의 시작과 끝에 애니메이션이 정상적으로 동작하도록 구현
 
@@ -52,7 +53,7 @@ TMBD API를 사용해 최신 TV 프로그램과 상영작 정보를 알려주는
 
 ![search-page-in-laptop](./readme/search_laptop-version.png)
 
-① 입력한 검색어에 대한 결과과 표시되도록 구현
+① 입력한 검색어에 대한 결과과 표시되도록 구현  
 ② 검색 결과가 5개 이하인 경우 좌측(<), 우측(>) 버튼이 표시되지 않도록 구현
 
 4.  추후 구현 예정

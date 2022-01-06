@@ -4,6 +4,12 @@ import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { makeImageFullUrl } from "../utils";
 import InfoCard from "./InfoCard";
 
@@ -19,11 +25,10 @@ const Container = styled(motion.div)`
 const Title = styled.span`
   font-weight: 600;
   font-size: 1.12rem;
-  margin-left: 0.4rem;
 `;
 
 const RowContainer = styled(motion.div)`
-  top: 2rem;
+  top: 1.8rem;
   width: 100%;
   position: absolute;
   display: grid;
@@ -186,7 +191,9 @@ const Section = ({ title, keyword, cards, isMovie }) => {
             ? "hidden"
             : ""
         }
-      >{`<`}</MoveButton>
+      >
+        <FontAwesomeIcon icon={faChevronLeft} className="fa-chevron-left" />
+      </MoveButton>
       <AnimatePresence
         custom={back}
         initial={false}
@@ -248,7 +255,9 @@ const Section = ({ title, keyword, cards, isMovie }) => {
             ? "hidden"
             : ""
         }
-      >{`>`}</MoveButton>
+      >
+        <FontAwesomeIcon icon={faChevronRight} className="fa-chevron-right" />
+      </MoveButton>
     </Container>
   );
 };

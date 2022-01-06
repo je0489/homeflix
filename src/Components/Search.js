@@ -69,7 +69,7 @@ const Search = () => {
       <SearchContainer ref={searchRef}>
         <Input
           type="text"
-          placeholder="사람, 제목, 장르를 입력하세요"
+          placeholder="제목을 입력하세요"
           value={searchTerm}
           onChange={updateTerm}
         />
