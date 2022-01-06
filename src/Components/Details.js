@@ -265,7 +265,9 @@ function Details() {
         setDetails(results);
         setTitle(isMovie ? results.original_title : results.original_name);
         setVideos(videos.slice(0, 5));
-        setSimilars(noImage(similars).slice(0, 6));
+        setSimilars(
+          noImage(similars.filter(({ id: _id }) => _id !== +id)).slice(0, 6)
+        );
         setLoading(results && videos && similars ? false : true);
       } catch {
         setError(`[${id}] 정보를 찾을 수 없습니다.`);
