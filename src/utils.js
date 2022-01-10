@@ -3,6 +3,8 @@ export const noImage = (datas) =>
 
 export const top10 = (datas) => datas.slice(0, 10);
 
+export const replaceSpace = (str, newSubstr) => str.replace(/\s/g, newSubstr);
+
 export const makeImageFullUrl = (path, size = "original") =>
   `https://image.tmdb.org/t/p/${size}/${path}`;
 
