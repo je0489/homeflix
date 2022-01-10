@@ -3,12 +3,14 @@ import { useLocation } from "react-router-dom";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import { tvApi, moviesApi } from "../api";
-import { noImage } from "../utils";
+import { noImage, replaceSpace } from "../utils";
 
 import Loader from "../Components/Loader";
 import Section from "../Components/Section";
 import Detail from "../Components/Detail";
 import ErrorMsg from "../Components/ErrorMsg";
+
+const REPLACE_TO_NEW_STR = "-";
 
 const Container = styled.div`
   padding: 1.2rem;
@@ -53,13 +55,15 @@ function Search() {
         } = await tvApi.getGenres();
         const {
           data: { results: tvResults },
-        } = await tvApi.search(searchTerm);
+        } = await tvApi.search(replaceSpace(searchTerm, REPLACE_TO_NEW_STR));
         const {
           data: { genres: movieGenres },
         } = await moviesApi.getGenres();
         const {
           data: { results: movieResults },
-        } = await moviesApi.search(searchTerm);
+        } = await moviesApi.search(
+          replaceSpace(searchTerm, REPLACE_TO_NEW_STR)
+        );
 
         const createGenreKey = (datas, isMovie) =>
           datas.map((data) => {
