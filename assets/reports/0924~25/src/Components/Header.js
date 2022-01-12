@@ -12,8 +12,8 @@ const Item = styled.li`
   margin-right: 20px;
   text-transform: uppercase;
   font-weight: 600;
-  color: ${props => (props.selected ? "white" : "black")};
-  background-color: ${props => (props.selected ? "#f1c40f" : "white")};
+  color: ${(props) => (props.selected ? "white" : "black")};
+  background-color: ${(props) => (props.selected ? "#f1c40f" : "white")};
 `;
 
 export default withRouter(({ location: { pathname } }) => (

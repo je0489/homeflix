@@ -1,4 +1,4 @@
-![homeflix-title](./readme/homeflix-title.png)
+![homeflix-title](./assets/readme/homeflix-title.png)
 
 # 🎥 **homeflix**
 
@@ -16,8 +16,8 @@ TMBD API를 사용해 최신 TV 프로그램과 상영작 정보를 알려주는
 
 - laptop/mobile 화면
 <div style="display:flex; align-items:start; margin: 0.5rem 0">
-    <img src="./readme/home_laptop-version.png" alt="home-page-in-laptop" width="70%">
-    <img src="./readme/home_mobile-version.jpg" alt="home-page-in-mobile" style="width:25%; margin-left: 0.3rem">
+    <img src="./assets/readme/home_laptop-version.png" alt="home-page-in-laptop" width="70%">
+    <img src="./assets/readme/home_mobile-version.jpg" alt="home-page-in-mobile" style="width:25%; margin-left: 0.3rem">
 </div>
 
 ① 최신 인기 상영작 TOP 10 목록을 애니메이션을 적용하여 구현  
@@ -27,7 +27,7 @@ TMBD API를 사용해 최신 TV 프로그램과 상영작 정보를 알려주는
 
 - laptop 화면
 
-![tv-page-in-laptop](./readme/tv_laptop-version.png)
+![tv-page-in-laptop](./assets/readme/tv_laptop-version.png)
 
 ① mount 시, random 함수를 통해 인기 TV 프로그램 TOP 5의 일부 정보(포스터, 로고, 프로그램 설명)를 화면에 표시  
 ② 프로그램 설명 길이가 100자 이상인 경우, 문장이 끝나는 데까지 표시되도록 구현  
@@ -40,7 +40,7 @@ TMBD API를 사용해 최신 TV 프로그램과 상영작 정보를 알려주는
 
 - laptop 화면
 
-![details-page-in-laptop](./readme/details_laptop-version.gif)
+![details-page-in-laptop](./assets/readme/details_laptop-version.gif)
 
 ① 클릭한 비디오에 대한 일부 정보(포스터, 로고, 방영일자, 설명, 예고편, 관련 영상) 표시  
 ② 예고편의 유투브 썸네일을 가져와 crop 작업  
@@ -51,7 +51,7 @@ TMBD API를 사용해 최신 TV 프로그램과 상영작 정보를 알려주는
 
 - laptop 화면
 
-![search-page-in-laptop](./readme/search_laptop-version.png)
+![search-page-in-laptop](./assets/readme/search_laptop-version.png)
 
 ① 입력한 검색어에 대한 결과과 표시되도록 구현  
 ② 검색 결과가 5개 이하인 경우 좌측(<), 우측(>) 버튼이 표시되지 않도록 구현
