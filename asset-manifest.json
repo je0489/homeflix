@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/homeflix/static/js/main.b9f7c456.chunk.js",
-    "main.js.map": "/homeflix/static/js/main.b9f7c456.chunk.js.map",
+    "main.js": "/homeflix/static/js/main.3c4464d8.chunk.js",
+    "main.js.map": "/homeflix/static/js/main.3c4464d8.chunk.js.map",
     "runtime-main.js": "/homeflix/static/js/runtime-main.59936450.js",
     "runtime-main.js.map": "/homeflix/static/js/runtime-main.59936450.js.map",
     "static/js/2.d9c8a8bd.chunk.js": "/homeflix/static/js/2.d9c8a8bd.chunk.js",
@@ -12,6 +12,6 @@
   "entrypoints": [
     "static/js/runtime-main.59936450.js",
     "static/js/2.d9c8a8bd.chunk.js",
-    "static/js/main.b9f7c456.chunk.js"
+    "static/js/main.3c4464d8.chunk.js"
   ]
 }
